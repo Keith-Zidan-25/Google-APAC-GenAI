@@ -16,7 +16,7 @@ MCP_PORT = int(os.environ.get("MCP_PORT", 8081))
 
 def wait_for_mcp(timeout: int = 20):
     """Block until the MCP SSE endpoint is accepting connections."""
-    url = f"http://127.0.0.1:{MCP_PORT}/sse"
+    url = f"http://0.0.0.0:{MCP_PORT}/sse"
     deadline = time.time() + timeout
     while time.time() < deadline:
         try:

@@ -17,10 +17,12 @@ API_KEY = os.getenv("GEMINI_API_KEY") or os.getenv("GOOGLE_API_KEY")
 if not API_KEY:
     raise ValueError("API Key not found")
 
+MCP_HOST = os.getenv("MCP_HOST", "localhost")
 MCP_PORT = int(os.environ.get("MCP_PORT", 8081))
 
 def load_instructions(file_path: str) -> str:
     abs_path = os.path.join(_HERE, file_path)
+    
     if not os.path.exists(abs_path):
         return "Default instructions: Fact-check the user's claim."
     with open(abs_path, "r", encoding="utf-8") as f:
@@ -35,7 +37,7 @@ agent = Agent(
         big_query_tools,
         McpToolset(
             connection_params=SseConnectionParams(
-                url=f"http://127.0.0.1:{MCP_PORT}/sse",
+                url=f"http://{MCP_HOST}:{MCP_PORT}/sse",
             ),
             tool_filter=[
                 "health_check",
